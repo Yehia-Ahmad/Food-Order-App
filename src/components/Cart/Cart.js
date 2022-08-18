@@ -3,7 +3,7 @@ import Modal from "../UI/Modal";
 
 import classes from "./Cart.module.css";
 
-const Cart = () => {
+const Cart = (props) => {
   const cartItem = (
     <ul className={classes["cart-items"]}>
       {[{ id: "e1", name: "Sushi", amount: 2, price: 12.99 }].map((item) => {
@@ -12,15 +12,24 @@ const Cart = () => {
     </ul>
   );
 
+  const onCloseButtonHandler = () => {
+    props.onCloseCart(false);
+  };
+
   return (
-    <Modal>
+    <Modal closeCart={onCloseButtonHandler}>
       {cartItem}
       <div className={classes.total}>
         <span>Total Amount</span>
         <span>35.62</span>
       </div>
       <div className={classes.actions}>
-        <button className={classes["button--alt"]}>Close</button>
+        <button
+          className={classes["button--alt"]}
+          onClick={onCloseButtonHandler}
+        >
+          Close
+        </button>
         <button className={classes.button}>Order</button>
       </div>
     </Modal>
