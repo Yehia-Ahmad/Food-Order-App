@@ -6,15 +6,15 @@ import AvailableMeals from "./components/Meals/AvailableMeals";
 import MealsSummary from "./components/Meals/MealsSummary";
 
 function App() {
-  const [isCartDisable, setCartDisable] = useState(false);
+  const [cartIsVisiable, setCartIsVisiable] = useState(false);
 
   const onClickCartHandler = () => {
-    setCartDisable(true);
+    setCartIsVisiable(true);
   };
 
   return (
     <React.Fragment>
-      {isCartDisable && <Cart onCloseCart={setCartDisable} />}
+      {cartIsVisiable && <Cart onCloseCart={setCartIsVisiable} />}
       <Header onClickCart={onClickCartHandler} />
       <main>
         <MealsSummary />
