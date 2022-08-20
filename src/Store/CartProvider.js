@@ -14,6 +14,7 @@ const cartReducer = (state, action) => {
       items: upDataedItems,
       totalPrice: upDataedTotalPrice,
     };
+  } else if (action.type === "REMOVE") {
   }
 
   return defaultCartSate;
