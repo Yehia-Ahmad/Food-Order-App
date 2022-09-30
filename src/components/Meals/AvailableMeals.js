@@ -6,24 +6,27 @@ import classes from "./AvailableMeals.module.css";
 
 const AvailableMeals = () => {
   const [meals, setMeal] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://react-course-b6ae2-default-rtdb.firebaseio.com/Meals.json")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        const loadedData = [];
-        for (const mealKey in data) {
-          loadedData.push({
-            id: mealKey,
-            name: data[mealKey].name,
-            description: data[mealKey].description,
-            price: data[mealKey].price,
-          });
-          setMeal(loadedData);
-        }
-      });
+    const fetchData = async () => {
+      const response = await fetch(
+        "https://react-course-b6ae2-default-rtdb.firebaseio.com/Meals.json"
+      );
+      const data = await response.json();
+      const loadedData = [];
+      for (const mealKey in data) {
+        loadedData.push({
+          id: mealKey,
+          name: data[mealKey].name,
+          description: data[mealKey].description,
+          price: data[mealKey].price,
+        });
+        setMeal(loadedData);
+        setIsLoading(false);
+      }
+    };
+    fetchData();
   }, []);
 
   const mealsList = meals.map((meal) => {
@@ -38,11 +41,14 @@ const AvailableMeals = () => {
     );
   });
 
+  let content = <p>Loading...</p>;
+
+  if (!isLoading) {
+    content = <ul>{mealsList}</ul>;
+  }
   return (
     <section className={classes.meals}>
-      <Card>
-        <ul>{mealsList}</ul>
-      </Card>
+      <Card>{content}</Card>
     </section>
   );
 };
