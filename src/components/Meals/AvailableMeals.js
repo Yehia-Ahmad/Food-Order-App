@@ -6,24 +6,34 @@ import classes from "./AvailableMeals.module.css";
 
 const AvailableMeals = () => {
   const [meals, setMeal] = useState([]);
+  const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(
-        "https://react-course-b6ae2-default-rtdb.firebaseio.com/Meals.json"
-      );
-      const data = await response.json();
-      const loadedData = [];
-      for (const mealKey in data) {
-        loadedData.push({
-          id: mealKey,
-          name: data[mealKey].name,
-          description: data[mealKey].description,
-          price: data[mealKey].price,
-        });
-        setMeal(loadedData);
-        setIsLoading(false);
+      try {
+        const response = await fetch(
+          "https://react-course-b6ae2-default-rtdb.firebaseio.com/Meals.json"
+        );
+        if (!response.ok) {
+          throw new Error("something Went Wrong");
+        }
+
+        const data = await response.json();
+        const loadedData = [];
+        for (const mealKey in data) {
+          loadedData.push({
+            id: mealKey,
+            name: data[mealKey].name,
+            description: data[mealKey].description,
+            price: data[mealKey].price,
+          });
+          setMeal(loadedData);
+          setIsLoading(false);
+        }
+      } catch (err) {
+        console.log(err.message);
+        setError(err.message);
       }
     };
     fetchData();
@@ -45,6 +55,10 @@ const AvailableMeals = () => {
 
   if (!isLoading) {
     content = <ul>{mealsList}</ul>;
+  }
+
+  if (error) {
+    content = <p>{error}</p>;
   }
   return (
     <section className={classes.meals}>
