@@ -48,6 +48,21 @@ const Cart = (props) => {
     }
   };
 
+  const onConfirmHandler = (userData) => {
+    fetch("https://react-course-b6ae2-default-rtdb.firebaseio.com/order.json", {
+      // method: "POST",
+      // body: JSON.stringify({
+      //   user: userData,
+      //   cartItems: cartCtx.items,
+      method: "POST",
+      body: JSON.stringify({
+        user: userData,
+        orderedItems: cartCtx.items,
+      }),
+    });
+    console.log("Done");
+  };
+
   const onCancelHandler = () => {
     setIsOrder(false);
   };
@@ -73,7 +88,9 @@ const Cart = (props) => {
         <span>Total Amount</span>
         <span>{price}</span>
       </div>
-      {isOrder && <Checkout onCancel={onCancelHandler} />}
+      {isOrder && (
+        <Checkout onConfirm={onConfirmHandler} onCancel={onCancelHandler} />
+      )}
       {!isOrder && modalButton}
     </Modal>
   );

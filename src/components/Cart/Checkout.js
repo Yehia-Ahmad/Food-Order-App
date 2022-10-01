@@ -34,13 +34,14 @@ const Checkout = (props) => {
     const enteredCityIsValid = isEmpty(enteredCity);
     const enteredPostalCodeIsValid = isFiveChar(enteredPostalCode);
 
-    const isValid =
-      enteredNameIsValid &&
-      enteredCityIsValid &&
-      enteredPostalCodeIsValid &&
-      enteredStreetIsValid;
+    const notIsValid =
+      !enteredNameIsValid &&
+      !enteredCityIsValid &&
+      !enteredPostalCodeIsValid &&
+      !enteredStreetIsValid;
 
-    if (!isValid) {
+    if (notIsValid) {
+      console.log("Done");
       return;
     }
 
@@ -49,6 +50,13 @@ const Checkout = (props) => {
       street: enteredStreetIsValid,
       city: enteredCityIsValid,
       postalCode: enteredPostalCodeIsValid,
+    });
+
+    props.onConfirm({
+      name: enteredName,
+      street: enteredStreet,
+      city: enteredCity,
+      postalCode: enteredPostalCode,
     });
   };
 
